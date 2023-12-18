@@ -1,2 +1,2 @@
-# ed2k-Autolinker
-It adds support for ed2k
+# Topics-List-BBC
+Insert an alphabetically ordered list of topics from the board using a BBC.

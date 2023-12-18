@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<!DOCTYPE package-info SYSTEM "http://www.simplemachines.org/xml/package-info">
+<package-info xmlns="http://www.simplemachines.org/xml/package-info" xmlns:smf="http://www.simplemachines.org/">
+	<id>smftricks:ed2k_autolinker</id>
+	<name>ed2k Autolinker</name>
+	<version>1.0</version>
+	<type>modification</type>
+	<install for="2.1 - 2.1.99">
+		<!-- Mod Readme -->
+		<readme lang="english" parsebbc="true" type="file">readme/readme.english.txt</readme>
+		<!-- License -->
+		<license type="inline" parsebbc="false">
+			This Source Code Form is subject to the terms of the Mozilla Public
+			License, v. 2.0. If a copy of the MPL was not distributed with this
+			file, You can obtain one at https://www.mozilla.org/en-US/MPL/2.0/.
+		</license>
+		<!-- Theme Files -->
+		<require-dir name="Themes" destination="$boarddir">Theme Files</require-dir>
+		<!-- BBC Files -->
+		<require-dir name="Sources" destination="$boarddir">Source file</require-dir>
+		<!-- Hooks -->
+		<hook hook="integrate_pre_load" function="Ed2k::initialize#" file="$sourcedir/Class-ed2k.php" />
+		<!-- Redirect -->
+		<redirect url="?action=admin;area=modsettings;sa=topicslist;" />
+	</install>
+	
+	<uninstall for="2.1 - 2.1.99">
+		<!-- Hooks Remove -->
+		<hook hook="integrate_pre_load" function="Ed2k::initialize#" file="$sourcedir/Class-ed2k.php" reverse="true" />
+		<!-- Source Files -->
+		<remove-file name="sourcedir/Class-ed2k.php">Source file</remove-file>
+		<!-- Language Files -->
+		<remove-dir name="$languagedir/ed2k">Language Files</remove-dir>
+		<!-- Image -->
+		<remove-file name="$imagesdir/ed2k.png" />
+	</uninstall>
+</package-info>
