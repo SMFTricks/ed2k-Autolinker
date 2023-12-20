@@ -15,13 +15,11 @@
 			file, You can obtain one at https://www.mozilla.org/en-US/MPL/2.0/.
 		</license>
 		<!-- Theme Files -->
-		<require-dir name="Themes" destination="$boarddir">Theme Files</require-dir>
+		<require-file name="Themes" destination="$boarddir">Icon</require-file>
 		<!-- BBC Files -->
 		<require-dir name="Sources" destination="$boarddir">Source file</require-dir>
 		<!-- Hooks -->
 		<hook hook="integrate_pre_load" function="Ed2k::initialize#" file="$sourcedir/Class-ed2k.php" />
-		<!-- Redirect -->
-		<redirect url="?action=admin;area=modsettings;sa=topicslist;" />
 	</install>
 	
 	<uninstall for="2.1 - 2.1.99">
@@ -29,8 +27,6 @@
 		<hook hook="integrate_pre_load" function="Ed2k::initialize#" file="$sourcedir/Class-ed2k.php" reverse="true" />
 		<!-- Source Files -->
 		<remove-file name="sourcedir/Class-ed2k.php">Source file</remove-file>
-		<!-- Language Files -->
-		<remove-dir name="$languagedir/ed2k">Language Files</remove-dir>
 		<!-- Image -->
 		<remove-file name="$imagesdir/ed2k.png" />
 	</uninstall>
