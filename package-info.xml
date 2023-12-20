@@ -15,7 +15,7 @@
 			file, You can obtain one at https://www.mozilla.org/en-US/MPL/2.0/.
 		</license>
 		<!-- Theme Files -->
-		<require-file name="Themes" destination="$boarddir">Icon</require-file>
+		<require-dir name="Themes" destination="$boarddir">Icon</require-dir>
 		<!-- BBC Files -->
 		<require-dir name="Sources" destination="$boarddir">Source file</require-dir>
 		<!-- Hooks -->
