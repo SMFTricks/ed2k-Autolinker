@@ -28,6 +28,6 @@
 		<!-- Source Files -->
 		<remove-file name="sourcedir/Class-ed2k.php">Source file</remove-file>
 		<!-- Image -->
-		<remove-file name="$imagesdir/ed2k.png" />
+		<remove-file name="$imagesdir/ed2k.gif" />
 	</uninstall>
 </package-info>

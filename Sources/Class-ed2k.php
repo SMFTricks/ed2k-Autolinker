@@ -54,6 +54,7 @@ class Ed2k
 	private function ed2k_to_bbc(array $matches) : string
 	{
 		$ed2k_link = str_replace('<br>', '', trim($matches[0]));
+
 		return '<br>[ed2k]' . $ed2k_link . '[/ed2k]<br>';
 	}
 
@@ -96,14 +97,14 @@ class Ed2k
 
 				// Set the download link
 				$data = '
-					<img src="' . $settings['default_images_url'] . '/ed2k.png">
+					<img src="' . $settings['default_images_url'] . '/ed2k.gif">
 					<a href="' . $data . '">
 						' . ($params['{title}'] ?: $title ?? $data) . '
 					</a>';
 
 				if (!empty($id) && $params['{noid}'] !== 'true')
 				{
-					$data .= '<a rel="noopener" target="_blank" href="http://ed2k.shortypower.dyndns.org/?hash=' . $id . '"><span class="main_icons stats"></span></a>';
+					$data .= '<a style="margin-inline-start: 1em;" rel="noopener" target="_blank" href="http://ed2k.shortypower.dyndns.org/?hash=' . $id . '"><span class="main_icons stats"></span></a>';
 				}
 			},
 			'block_level' => true,
