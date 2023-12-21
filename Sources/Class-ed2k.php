@@ -87,13 +87,14 @@ class Ed2k
 					'match' => '(true)',
 				]
 			],
-			'content' => '<div style="padding: 0.5em 1.5em; display: flex; gap: 0.5em; align-items: center; flex-wrap: wrap;">$1</div>',
+			'content' => '<div style="padding: 0.5em 1.5em; display: flex; gap: 1.25em; align-items: center; flex-wrap: wrap;">$1</div>',
 			'validate' => isset($disabled['code']) ? null : function(array &$tag, string &$data, array $disabled, array $params) use ($settings)
 			{
 				// Get the information/details for this URL
 				$ed2k_data = explode('|', $data);
 				$title = $ed2k_data[2] ?? false;
 				$id = $ed2k_data[4] ?? false;
+				$size = $ed2k_data[3] ?? 0;
 
 				// Set the download link
 				$data = '
@@ -102,6 +103,13 @@ class Ed2k
 						' . ($params['{title}'] ?: $title ?? $data) . '
 					</a>';
 
+				// File size
+				if (!empty($size))
+				{
+					$data .= '<strong>(' . $this->fileSize($size) . ')</strong>';
+				}
+
+				// ID with link
 				if (!empty($id) && $params['{noid}'] !== 'true')
 				{
 					$data .= '<a style="margin-inline-start: 1em;" rel="noopener" target="_blank" href="http://ed2k.shortypower.dyndns.org/?hash=' . $id . '"><span class="main_icons stats"></span></a>';
@@ -110,5 +118,24 @@ class Ed2k
 			'block_level' => true,
 			'disallow_children' => true,
 			];
+	}
+
+	/**
+	 * Get the filesize
+	 * 
+	 * @return string The formatted filesize
+	 */
+	private function fileSize(int $size) : string
+	{
+		$units = ['B', 'KB', 'MB', 'GB'];
+
+		$i = 0;
+		while ($size >= 1024 && $i < count($units) - 1)
+		{
+			$size /= 1024;
+			$i++;
+		}
+
+		return round($size, 2) . ' ' . $units[$i];
 	}
 }
