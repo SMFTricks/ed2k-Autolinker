@@ -26,7 +26,7 @@
 		<!-- Hooks Remove -->
 		<hook hook="integrate_pre_load" function="Ed2k::initialize#" file="$sourcedir/Class-ed2k.php" reverse="true" />
 		<!-- Source Files -->
-		<remove-file name="sourcedir/Class-ed2k.php">Source file</remove-file>
+		<remove-file name="$sourcedir/Class-ed2k.php">Source file</remove-file>
 		<!-- Image -->
 		<remove-file name="$imagesdir/ed2k.gif" />
 	</uninstall>
