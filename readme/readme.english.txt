@@ -12,5 +12,5 @@
 
 [hr]
 
-[size=3][url="https://github.com/SMFTricks/BBC-Topics-List/blob/main/CHANGELOG.md"][color=#cc5d31]Changelog[/color][/url][/size]
-[size=3][url="https://github.com/SMFTricks/BBC-Topics-List"][color=#5e2b82]GitHub[/color][/url][/size]
+[size=3][url="https://github.com/SMFTricks/ed2k-Autolinker/blob/main/CHANGELOG.md"][color=#cc5d31]Changelog[/color][/url][/size]
+[size=3][url="https://github.com/SMFTricks/ed2k-Autolinker"][color=#5e2b82]GitHub[/color][/url][/size]
