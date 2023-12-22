@@ -1,6 +1,6 @@
 # Changelog
 
-#### 1.0 - 22 Decemmber 2023
+#### 1.0 - 22 December 2023
 - ![New Feature](https://smftricks.com/assets/changelog/tag--plus.png) Initial release.
 
 ## Legend
