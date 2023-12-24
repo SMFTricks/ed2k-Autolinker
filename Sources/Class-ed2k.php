@@ -16,7 +16,7 @@ class Ed2k
 	/**
 	 * @var string Pattern
 	 */
-	private string $_pattern = '~(\s|<br>|\n|^)(?!.*?\[ed2k\].*?\[/ed2k\])ed2k://\|file\|(.+?)\|(.+?)\|.+?(\s|<br>|\n|$)~i';
+	private string $_pattern = '/(?<!\")(ed2k:\/\/[\s\S]*?\|\/)/';
 
 	/**
 	 * Initialize the mod
@@ -32,97 +32,63 @@ class Ed2k
 	 */
 	private function hooks() : void
 	{
-		add_integration_function('integrate_preparsecode', 'Ed2k::preparsecode#', false);
-		add_integration_function('integrate_bbc_codes', 'Ed2k::bbc_codes#', false);
+		add_integration_function('integrate_post_parsebbc', 'Ed2k::postparsecode#', false);
 	}
 
 	/**
-	 * Add some checks before the message is sent
+	 * Add some checks after the message is parsed
 	 * 
 	 * @param string $message The message content
+	 * @return string The replacement string
 	 */
-	public function preparsecode(string &$message) : void
+	public function postparsecode(string &$message) : void
 	{
-		$message = preg_replace_callback($this->_pattern, [$this, 'ed2k_to_bbc'], $message);
+		$message = preg_replace_callback($this->_pattern, [$this, 'ed2k_to_link'], $message);
 	}
 
 	/**
-	 * Set the actual format for the BBC
+	 * Format the ed2k link
 	 * 
-	 * @param array The matching strings
+	 * @param array The matched part of the message
 	 */
-	private function ed2k_to_bbc(array $matches) : string
-	{
-		$ed2k_link = str_replace('<br>', '', trim($matches[0]));
-
-		return '<br>[ed2k]' . $ed2k_link . '[/ed2k]<br>';
-	}
-
-	/**
-	 * Attach the content to the bbc.
-	 * 
-	 * @param array $codes The bbc codes
-	 * @param array $no_autolink_tags Disable autolink for these tags
-	 * @return void
-	 */
-	public function bbc_codes(array &$codes, array &$no_autolink_tags) : void
+	private function ed2k_to_link(array $matches) : string
 	{
 		global $settings;
 
-		// Don't autolink this bbc
-		$no_autolink_tags[] = 'ed2k';
+		$ed2k_link = $matches[0];
 
-		// Add the bbc
-		$codes[] = [
-			'tag' => 'ed2k',
-			'type' => 'unparsed_content',
-			'parameters' => [
-				'title' => [
-					'optional' => true,
-					'quote' => true,
-				],
-				'noid' => [
-					'optional' => true,
-					'quote' => true,
-					'match' => '(true)',
-				]
-			],
-			'content' => '<div style="padding: 0.5em 1.5em; display: flex; gap: 1.25em; align-items: center; flex-wrap: wrap;">$1</div>',
-			'validate' => isset($disabled['code']) ? null : function(array &$tag, string &$data, array $disabled, array $params) use ($settings)
-			{
-				// Get the information/details for this URL
-				$ed2k_data = explode('|', $data);
-				$title = $ed2k_data[2] ?? false;
-				$id = $ed2k_data[4] ?? false;
-				$size = $ed2k_data[3] ?? 0;
+		// Get the information/details for this URL
+		$ed2k_data = explode('|', $ed2k_link);
+		$title = $ed2k_data[2] ?? $ed2k_link;
+		$size = $ed2k_data[3] ?? 0;
+		$id = $ed2k_data[4] ?? false;
 
-				// Set the download link
-				$data = '
-					<img src="' . $settings['default_images_url'] . '/ed2k.gif">
-					<a href="' . $data . '">
-						' . ($params['{title}'] ?: $title ?? $data) . '
-					</a>';
+		// Set the download link
+		$ed2k_link = '
+			<img src="' . $settings['default_images_url'] . '/ed2k.gif">
+			<a href="' . $ed2k_link . '">
+				' . $title . '
+			</a>';
 
-				// File size
-				if (!empty($size))
-				{
-					$data .= '<strong>(' . $this->fileSize($size) . ')</strong>';
-				}
+		// File size
+		if (!empty($size))
+		{
+			$ed2k_link .= '<strong>(' . $this->fileSize($size) . ')</strong>';
+		}
 
-				// ID with link
-				if (!empty($id) && $params['{noid}'] !== 'true')
-				{
-					$data .= '<a style="margin-inline-start: 1em;" rel="noopener" target="_blank" href="http://ed2k.shortypower.dyndns.org/?hash=' . $id . '"><span class="main_icons stats"></span></a>';
-				}
-			},
-			'block_level' => true,
-			'disallow_children' => true,
-			];
+		// ID with link
+		if (!empty($id))
+		{
+			$ed2k_link .= '<a style="margin-inline-start: 1em;" rel="noopener" target="_blank" href="http://ed2k.shortypower.dyndns.org/?hash=' . $id . '"><span class="main_icons stats"></span></a>';
+		}
+
+		return $ed2k_link;
 	}
 
 	/**
 	 * Get the filesize
 	 * 
+	 * @param int The size of the file
 	 * @return string The formatted filesize
 	 */
 	private function fileSize(int $size) : string
@@ -135,7 +101,6 @@ class Ed2k
 			$size /= 1024;
 			$i++;
 		}
-
 		return round($size, 2) . ' ' . $units[$i];
 	}
 }
