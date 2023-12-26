@@ -79,7 +79,7 @@ class Ed2k
 		// ID with link
 		if (!empty($id))
 		{
-			$ed2k_link .= '<a style="margin-inline-start: 1em;" rel="noopener" target="_blank" href="http://ed2k.shortypower.dyndns.org/?hash=' . $id . '"><span class="main_icons stats"></span></a>';
+			$ed2k_link .= '<a style="margin-inline-start: 1em;" rel="noopener" target="_blank" href="http://ed2k.shortypower.org/?hash=' . $id . '"><span class="main_icons stats"></span></a>';
 		}
 
 		return $ed2k_link;
